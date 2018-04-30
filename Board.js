@@ -171,7 +171,7 @@ class Board{
         if(!this.checkDraw()){
           return "FULL";
         }else{
-          return false;
+          return "DRAW";
         }
 
       }else{
