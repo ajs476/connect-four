@@ -31,6 +31,8 @@ let gameBoard = new Board();
 let gameOver = false;
 // keep track of whos turn it is with boolean redTurn
 let redTurn = true;
+var currentTurn = "RED";
+var matchWinner = "";
 
 
 // ask the user if they want to play connect-four
@@ -66,25 +68,46 @@ var takeDiscDropLocation = function () {
   // display the game board in the console
   gameBoard.displayBoard();
   // ask the user for a column value to drop their piece into
-  rl.question("Enter a Column to drop your disc (1-7)\n"
-        , function (line) {
-                    // display to the user where they placed their piece in the console
-                    console.log("You drop your disc into column: "+line);
-                    // if it's reds turn, place a red disc and change it to yellows turn
-                    if(redTurn){
-                      gameOver = gameBoard.dropDisc(line,redDisc);
-                      redTurn = false;
-                    // if it's not reds turn, it's yellows turn
-                    // remember to reset the next turn to reds
-                    }else{
-                      gameOver = gameBoard.dropDisc(line,yellowDisc);
-                      redTurn = true;
-                    }
+  rl.question("Current Turn: "+ currentTurn + " \nEnter a Column to drop your disc (1-7)\n"
+        , function (colVal) {
+            if(isNaN(colVal) || Number(colVal) < 1 || Number(colVal) > 7){
+              console.log("Invalid column value: "+Number(colVal)+". Enter a value 1 to 7.");
+            }else{
+              // if it's reds turn, place a red disc and change it to yellows turn
+              if(redTurn){
+                gameOver = gameBoard.dropDisc(colVal,redDisc);
+                redTurn = false;
+                currentTurn = "YELLOW";
+              // if it's not reds turn, it's yellows turn
+              // remember to reset the next turn to reds
+              }else{
+                gameOver = gameBoard.dropDisc(colVal,yellowDisc);
+                redTurn = true;
+                currentTurn = "RED";
+              }
+            }
+
     // if the game isn't over yet, we will keep taking discs
     if(!gameOver){
       takeDiscDropLocation(); //Calling this function again to ask new question
     }else{
       // the game is over
+      switch (currentTurn) {
+        case "RED":
+          matchWinner = "YELLOW";
+          break;
+        case "YELLOW":
+          matchWinner = "RED";
+          break;
+        default:
+
+      }
+      if(gameOver == "DRAW"){
+        console.log("GAME OVER! DRAW!");
+      }else{
+        console.log("GAME OVER! "+matchWinner+ " WON THE MATCH!");
+      }
+
       // display the winning board layout, and ask if the user wants to play again
       gameBoard.displayBoard();
       askToPlayGame();

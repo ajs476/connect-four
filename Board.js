@@ -119,9 +119,28 @@ class Board{
     }
     // return true if there is a winner, the current game is over
     if(downScore >= 3 || diagRightDownScore >= 3 || rightScore >= 3 || diagRightUpScore >= 3 || diagLeftUpScore >= 3 || leftScore >= 3 || diagLeftDownScore >= 3){
-      console.log("Game Over. "+color+" wins!");
+      //console.log("Game Over. "+color+" wins!");
       return true;
     }
+  }
+
+  // checkDraw() checks for a draw (the board is full and no color won)
+  // if no open slots are found in the top row, the board is full and the game is a draw
+  checkDraw(){
+    // look at the top row of the board (the first array in the boardArray)
+    let topRow = this.boardArray[0];
+    let i = topRow.length;
+    // loop through each member of the array and see if there is an open slot
+    while(i > 0){
+      if(topRow[i] == "   "){
+        return false;
+      }else{
+        // look in next cell
+        i--;
+      }
+    }
+    // if we get here, we never found an open slot, hence the board is full
+    return "DRAW"; // return draw causes the game to end as a draw
   }
 
   // dropDisc() takes a column(int) and a disc(Disc object)
@@ -148,10 +167,11 @@ class Board{
       if(lastEmptyIndex < 0){
         // the disc will not fall into the column, becuase it is full of discs
         console.log("Invalid column. Column is full...");
-        return;
+        // this column is full, but are all columns full?
+        return this.checkDraw();
       }else{
         // the disc will fall, so put it in the correct cell in the column
-        console.log("Dropped a "+disc.getColor()+ " disc at: [Row: "+lastEmptyIndex+" Col: "+index+"]");
+        //console.log("Dropped a "+disc.getColor()+ " disc at: [Row: "+lastEmptyIndex+" Col: "+index+"]");
         this.boardArray[lastEmptyIndex][index] = disc.getColor();
       }
       return this.checkWin(this.boardArray[lastEmptyIndex][index], lastEmptyIndex, index); // this will return true if the last dropped disc causes a win for a player
@@ -161,7 +181,16 @@ class Board{
   // displayBoard() loop through the board and print out the rows to the console
   displayBoard(){
     for(let i=0; i<this.boardArray.length; i++){
-      console.log(this.boardArray[i]);
+      for(let j=0; j<this.boardArray[i].length; j++){
+        if(this.boardArray[i][j] == "red"){
+          process.stdout.write('\x1b[31m(R)\x1b[0m');
+        }else if(this.boardArray[i][j] == "yel"){
+          process.stdout.write('\x1b[33m(Y)\x1b[0m');
+        }else{
+          process.stdout.write("( )");
+        }
+      }
+      console.log("");
     }
   }
 }
