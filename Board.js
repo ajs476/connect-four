@@ -131,7 +131,7 @@ class Board{
     let topRow = this.boardArray[0];
     let i = topRow.length;
     // loop through each member of the array and see if there is an open slot
-    while(i > 0){
+    while(i >= 0){
       if(topRow[i] == "   "){
         return false;
       }else{
@@ -168,13 +168,20 @@ class Board{
         // the disc will not fall into the column, becuase it is full of discs
         console.log("Invalid column. Column is full...");
         // this column is full, but are all columns full?
-        return this.checkDraw();
+        if(!this.checkDraw()){
+          return "FULL";
+        }else{
+          return false;
+        }
+
       }else{
         // the disc will fall, so put it in the correct cell in the column
         //console.log("Dropped a "+disc.getColor()+ " disc at: [Row: "+lastEmptyIndex+" Col: "+index+"]");
         this.boardArray[lastEmptyIndex][index] = disc.getColor();
+        return this.checkWin(this.boardArray[lastEmptyIndex][index], lastEmptyIndex, index); // this will return true if the last dropped disc causes a win for a player
+
       }
-      return this.checkWin(this.boardArray[lastEmptyIndex][index], lastEmptyIndex, index); // this will return true if the last dropped disc causes a win for a player
+
     }
   }
 

@@ -76,14 +76,23 @@ var takeDiscDropLocation = function () {
               // if it's reds turn, place a red disc and change it to yellows turn
               if(redTurn){
                 gameOver = gameBoard.dropDisc(colVal,redDisc);
-                redTurn = false;
-                currentTurn = "YELLOW";
+                if(gameOver != "FULL"){
+                  redTurn = false;
+                  currentTurn = "YELLOW";
+                }else{
+                  gameOver = false
+                }
+
               // if it's not reds turn, it's yellows turn
               // remember to reset the next turn to reds
               }else{
                 gameOver = gameBoard.dropDisc(colVal,yellowDisc);
-                redTurn = true;
-                currentTurn = "RED";
+                if(gameOver != "FULL"){
+                  redTurn = true;
+                  currentTurn = "RED";
+                }else{
+                  gameOver = false;
+                }
               }
             }
 
