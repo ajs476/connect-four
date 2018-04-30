@@ -10,6 +10,8 @@ Have Node.js installed.  Clone this repo to your machine. Nagivate to the downlo
 ```
 You should then be prompted to play the game. Simply follow the prompts and enjoy.
 
+
+
 ### Prerequisites
 
 Node.js is required to run this project successfully
@@ -28,3 +30,7 @@ Node.js downloaded from: https://nodejs.org/en/
 ## Authors
 
 * **Alexander Sears**
+
+## Screenshots
+![Screenshot of console game running](../master/grab_1.png)
+![Screenshot of console game finishing](../master/grab_2.png)
